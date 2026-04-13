@@ -25,15 +25,19 @@ public class Estadisticas implements ColeccionarEstadisticas {
 
     @Override
     public void imprimirRepeorte(double tiempoTotalSimulacion) {
+        //Espera
         double maxEspera = esperas.stream().mapToDouble(v->v).max().orElse(0);
         double minEspera = esperas.stream().filter(v -> v > 0.0).mapToDouble(v->v).min().orElse(0);
         double mediaEspera = esperas.stream().mapToDouble(v->v).average().orElse(0);
+        //Tiempo en Sistema
         double maxEnSistema= tiempoEnSistema.stream().mapToDouble(v->v).max().orElse(0);
         double minEnSistema =tiempoEnSistema.stream().filter(v -> v > 0.0).mapToDouble(v->v).min().orElse(0);
         double mediaEnSistema= tiempoEnSistema.stream().mapToDouble(v->v).average().orElse(0);
+        //Ocio
         double maxOcio = ocios.stream().mapToDouble(v->v).max().orElse(0);
         double minOcio = ocios.stream().filter(v -> v > 0.0).mapToDouble(v->v).min().orElse(0);
         double porcentajeOcio = (ocioTotal/tiempoTotalSimulacion) * 100;
+    
         System.out.printf("Tiempos en Sistema (min) -> Media: %.2f | Max: %.2f | Min: %.2f\n", mediaEnSistema, maxEnSistema, minEnSistema);
         System.out.printf("Tiempos de Espera (min) -> Media: %.2f | Max: %.2f | Min: %.2f\n", mediaEspera, maxEspera, minEspera);
         System.out.printf("Ociosidad (min) -> Total: %.2f (%.2f%%) | Max: %.2f | Min: %.2f\n", ocioTotal, porcentajeOcio, maxOcio, minOcio);

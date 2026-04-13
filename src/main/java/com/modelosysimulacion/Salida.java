@@ -9,18 +9,24 @@ public class Salida extends Evento{
 
     @Override
     public void procesar(EstadoPista estado, FEL fel, ColeccionarEstadisticas estadisticas, GeneradorTiempos genArribo,GeneradorTiempos genSalida) {
-        estadisticas.registrarSalida();
-        double tiempoEnSistema= this.getTiempo() - avion.getTiempoArribo();
+        
+        estadisticas.registrarSalida();//actualizo cant aviones aterrizados
+        //registro timepo en sistema
+        double tiempoEnSistema= this.getTiempo() - avion.getTiempoArribo(); 
         estadisticas.registrarTiempoEnSistema(tiempoEnSistema);
+
         if(!estado.hayCola()){
+            //si no hay cola, libero la pista
             estado.liberarPista(this.tiempoEjecucion);
         }
         else{
+            //si hay cola, proceso el proximo avion
             Avion proximAvion = estado.quitarDCola();
-            estadisticas.registrarTamañoCola(estado.getTamañoCola());
+            estadisticas.registrarTamañoCola(estado.getTamañoCola()); // registro el tamaño de la cola
+            //registro el tiempo de espera
             double tiempoEspera = this.tiempoEjecucion-proximAvion.getTiempoArribo();
             estadisticas.registrarTiempoEspera(tiempoEspera);
-            
+            //programo la proxima salida
             double tiempoSalida= this.tiempoEjecucion+ genSalida.generarTiempo();
             fel.programarEvento(new Salida(tiempoSalida,proximAvion));
         }

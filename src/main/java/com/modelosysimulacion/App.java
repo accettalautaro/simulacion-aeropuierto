@@ -24,6 +24,7 @@ public class App
 
             
         }
+        
         if(!estado.estaOcupada()){
             estadisticas.registrarTiempoOcio(estado.getInicioUltimoOcio(), duracionSimulacion);
 
