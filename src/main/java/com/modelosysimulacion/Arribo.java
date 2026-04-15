@@ -13,6 +13,7 @@ public class Arribo extends Evento{
         //actualizo cant aviones  arribados
         estadisticas.registrarArribo();
         if(!estado.estaOcupada()){
+            // para calcular los intervalos de hora pico mod 1440
             // server desocupado
             estado.ocupar();
             estadisticas.registrarTiempoEspera(0.0); // no hay tiempo de espera

@@ -7,7 +7,7 @@ public class EstadoPista {
     private boolean ocupada = false;
     private final Queue<Avion> colaEspera = new LinkedList<>();
     private double inicioUltimoOcio=0.0;
-
+    private double desgaste= 3000;
     public boolean estaOcupada(){return ocupada;}
     public void ocupar(){this.ocupada=true;}
     public void liberarPista(double reloj){
@@ -20,5 +20,10 @@ public class EstadoPista {
     public double getInicioUltimoOcio(){return inicioUltimoOcio;}
     public int getTamañoCola(){
         return colaEspera.size();
+    }
+    public void actualizarDesgaste(){
+        Distribucion normal = new Normal(35, 5, 1);
+        Randomizer  random = new Randomizer1(null);
+        this.desgaste= this.desgaste - normal.getValue(random);
     }
 }
