@@ -1,5 +1,5 @@
 package com.modelosysimulacion;
 
-public interface GeneradorTiempos {
+public interface GenerarTiempo{
     double generarTiempo();
 }

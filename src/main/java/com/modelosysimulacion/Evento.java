@@ -9,6 +9,7 @@ abstract class Evento {
     }
     public int getOrder(){return order;}
     public double getTiempo(){return tiempoEjecucion;}
-    public abstract void procesar (EstadoPista estado,FEL fel,ColeccionarEstadisticas estadisticas,GeneradorTiempos genArribo, GeneradorTiempos genSalida);
+    public abstract void procesar (Server estado,Fel fel,Estadisticas estadisticas,GenerarTiempo genArribo, GenerarTiempo genSalida);
+    public abstract void procesar1(Server estado, Fel fel, Estadisticas estadisticas, Exponencial exponencial , Uniforme uniforme, Randomizer random);
 
 }

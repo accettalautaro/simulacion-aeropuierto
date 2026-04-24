@@ -11,8 +11,8 @@ public class Uniforme implements Distribucion {
 
     @Override
     public double getValue(Randomizer randomizer) {
-        
-        return (a+(b-a)*randomizer.nextRandom());
+        double z=(a+(b-a)*randomizer.nextRandom());
+        return z;
     }
 
 }

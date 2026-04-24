@@ -3,27 +3,39 @@ package com.modelosysimulacion;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Estadisticas implements ColeccionarEstadisticas {
-    private final List<Double> esperas = new ArrayList<>();
-    private final List<Double> ocios= new ArrayList<>();
-    private final List<Double> tiempoEnSistema= new ArrayList<>();
-    private double ocioTotal =0.0;
-    private int aeronaveArribada = 0;
-    private int aeronaveAterrizada = 0;
-    private int maxCola=0;
-    private int minCola= Integer.MAX_VALUE;
-    @Override
+public class Estadisticas  {
+    private final List<Double> esperas;
+    private final List<Double> ocios;
+    private final List<Double> tiempoEnSistema;
+    private double ocioTotal;
+    private int aeronaveArribada ;
+    private int aeronaveAterrizada ;
+    private int maxCola;
+    private int minCola;
+    
+    public Estadisticas() {
+        this.esperas=new ArrayList<>();
+        this.ocios=new ArrayList<>();
+        this.tiempoEnSistema=new ArrayList<>();
+        this.ocioTotal = 0.0;
+        this.aeronaveArribada = 0;
+        this.aeronaveAterrizada = 0;
+        this.maxCola = 0;
+        this.minCola = Integer.MAX_VALUE;
+    }
+
+
     public void registrarArribo() {
         aeronaveArribada += 1;
         
     }
 
-    @Override
+    
     public void registrarSalida() {
         aeronaveAterrizada += 1;
     }
 
-    @Override
+    
     public void imprimirRepeorte(double tiempoTotalSimulacion) {
         //Espera
         double maxEspera = esperas.stream().mapToDouble(v->v).max().orElse(0);
@@ -48,19 +60,19 @@ public class Estadisticas implements ColeccionarEstadisticas {
 
     }
     
-    @Override
+    
     public void registrarTiempoEspera(double tiempo) {
         esperas.add(tiempo);
         
     }
     
-    @Override
+    
     public void registrarTiempoEnSistema(double tiempo) {
         tiempoEnSistema.add(tiempo);
         
     }
 
-    @Override
+
     public void registrarTiempoOcio(double tiempoInicio, double tiempoFin) {
         double delta = tiempoFin-tiempoInicio;
         if(delta>0){
@@ -70,7 +82,7 @@ public class Estadisticas implements ColeccionarEstadisticas {
         
     }
 
-    @Override
+
     public void registrarTamañoCola(int tamaño) {
         if(tamaño> maxCola){
             maxCola=tamaño;

@@ -2,8 +2,13 @@ package com.modelosysimulacion;
 
 import java.util.Random;
 
-public class GenerarArriboT1 implements GeneradorTiempos {
-    private final Random random= new Random();
+public class GenerarArriboT1 implements GenerarTiempo {
+    private final Random random;
+    
+    public GenerarArriboT1() {
+        this.random = new Random();;
+    }
+
     @Override
         public double generarTiempo(){
             double r = random.nextDouble();

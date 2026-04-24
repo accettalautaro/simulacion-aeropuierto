@@ -1,34 +1,40 @@
 package com.modelosysimulacion;
 
+import java.util.Random;
+
 public class App 
 {
     public static void main( String[] args )
     {
-        FEL fel = new ColaPrioridadFEL();
-        EstadoPista estado = new EstadoPista();
-        ColeccionarEstadisticas estadisticas= new Estadisticas();
-        GeneradorTiempos genArribo= new GenerarArriboT1();
-        GeneradorTiempos genSalida = new GenerarSalidaT2();
-
+        Fel fel = new Fel();
+        Server server = new Server();
+        Estadisticas estadisticas= new Estadisticas();
+        GenerarTiempo genArribo= new GenerarArriboT1();
+        GenerarTiempo genSalida = new GenerarSalidaT2();
+        Uniforme uniforme= new Uniforme(10,25);
+        Exponencial exponencial= new Exponencial(15);
         double duracionSimulacion=40320.0;//4 semanas 
-        
+        Random random= new Random();
+        Randomizer randomizer= new Randomizer1(random);
         //inicio de simulacion
         Avion primerAvion = new Avion(1, 0);
         fel.programarEvento(new Arribo(0, primerAvion));
-        
+        double clock = fel.verProximo().getTiempo();
         //bucle de simulacion
-        while (!fel.estaVacia()&& fel.verProximo().getTiempo() <= duracionSimulacion) {
+        while (!fel.estaVacia()&& clock  <= duracionSimulacion) {
             Evento eventoActual = fel.extraerProximo();
-            
-            eventoActual.procesar(estado, fel, estadisticas, genArribo, genSalida);
+            clock = eventoActual.getTiempo();
+            //eventoActual.procesar(server, fel, estadisticas, genArribo, genSalida);
+            eventoActual.procesar1(server, fel, estadisticas,exponencial, uniforme,randomizer);
 
             
         }
         
-        if(!estado.estaOcupada()){
-            estadisticas.registrarTiempoOcio(estado.getInicioUltimoOcio(), duracionSimulacion);
+        if(!server.estaOcupada()){
+            estadisticas.registrarTiempoOcio(server.getInicioUltimoOcio(), duracionSimulacion);
 
         }
         estadisticas.imprimirRepeorte(duracionSimulacion);
+        System.out.println("Desgaste: "+ server.getDesgaste());
     }
 }
