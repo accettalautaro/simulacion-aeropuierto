@@ -16,11 +16,15 @@ public class Estadisticas  {
     private int maxCola;
     private int minCola;
     
-    public Estadisticas() {
+    public Estadisticas(int cantServers) {
         this.esperas=new ArrayList<>();
         this.tiempoEnSistema=new ArrayList<>();
-        this.ocioTotal = new ArrayList<>(Arrays.asList(0.0,0.0,0.0,0.0,0.0));
-        this.inicioOcio = new ArrayList<>(Arrays.asList(0.0,0.0,0.0,0.0,0.0));
+        this.ocioTotal = new ArrayList<>();
+        this.inicioOcio = new ArrayList<>();
+        for (int i = 0; i < cantServers; i++) {
+            this.ocioTotal.add(0.0);
+            this.inicioOcio.add(0.0);
+        }
         this.maxOcio=0;
         this.minOcio= Double.MAX_VALUE;
         this.aeronaveArribada = 0;
@@ -46,7 +50,7 @@ public class Estadisticas  {
     }
 
     
-    public void imprimirRepeorte(double tiempoTotalSimulacion) {
+    public void imprimirRepeorte(double tiempoTotalSimulacion,ArrayList<Server> servers) {
         
         //Espera
         double maxEspera = esperas.stream().mapToDouble(v->v).max().orElse(0);
@@ -59,9 +63,10 @@ public class Estadisticas  {
         //Ocio
         for(int i=0;i<ocioTotal.size();i++){
         System.out.println("Server "+(i+1));
+        System.out.printf("Desgaste: %.2f\n",servers.get(i).getDesgaste());
         System.out.printf("Ociosidad (min) -> Total: %.2f (%.2f%%)\n", this.ocioTotal.get(i), (this.ocioTotal.get(i)/tiempoTotalSimulacion) * 100 );
         }
-        System.out.printf("OCIO\nMax: %.2f \n",this.maxOcio);
+        System.out.printf("Ocio\nMax: %.2f \n",this.maxOcio);
         System.out.printf("Min: %.2f\n",this.minOcio);
         System.out.printf("Tiempos en Sistema (min) -> Media: %.2f | Max: %.2f | Min: %.2f\n", mediaEnSistema, maxEnSistema, minEnSistema);
         System.out.printf("Tiempos de Espera (min) -> Media: %.2f | Max: %.2f | Min: %.2f\n", mediaEspera, maxEspera, minEspera);
@@ -109,6 +114,13 @@ public class Estadisticas  {
                 minCola= tamaño;
             }
         }
+    }
+    public void verificarOcio(List<Server> servers, double duracionSimulacion){
+        for(int i = 0; i< servers.size();i++){
+            if(!servers.get(i).estaOcupada()){
+                registrarTiempoOcio(i,duracionSimulacion);
+            }
+        }    
     }
 
 
