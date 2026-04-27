@@ -3,6 +3,8 @@ package com.modelosysimulacion;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+import com.modelosysimulacion.eventos.Evento;
+
 public class Fel {
     private final PriorityQueue<Evento> cola;
 

@@ -1,0 +1,20 @@
+package com.modelosysimulacion.distribuciones;
+
+import com.modelosysimulacion.random.Randomizer;
+
+public class Uniforme implements Distribucion {
+    private int a;
+    private int b;
+    
+    public Uniforme(int a, int b) {
+        this.a = a;
+        this.b = b;
+    }
+
+    @Override
+    public double getValue(Randomizer randomizer) {
+        double z=(a+(b-a)*randomizer.nextRandom());
+        return z;
+    }
+
+}

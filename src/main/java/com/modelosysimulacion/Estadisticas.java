@@ -1,13 +1,16 @@
 package com.modelosysimulacion;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Estadisticas  {
     private final List<Double> esperas;
-    private final List<Double> ocios;
     private final List<Double> tiempoEnSistema;
-    private double ocioTotal;
+    private List<Double> ocioTotal;
+    private List<Double> inicioOcio;
+    private double maxOcio;
+    private double minOcio;
     private int aeronaveArribada ;
     private int aeronaveAterrizada ;
     private int maxCola;
@@ -15,13 +18,20 @@ public class Estadisticas  {
     
     public Estadisticas() {
         this.esperas=new ArrayList<>();
-        this.ocios=new ArrayList<>();
         this.tiempoEnSistema=new ArrayList<>();
-        this.ocioTotal = 0.0;
+        this.ocioTotal = new ArrayList<>(Arrays.asList(0.0,0.0,0.0,0.0,0.0));
+        this.inicioOcio = new ArrayList<>(Arrays.asList(0.0,0.0,0.0,0.0,0.0));
+        this.maxOcio=0;
+        this.minOcio= Double.MAX_VALUE;
         this.aeronaveArribada = 0;
         this.aeronaveAterrizada = 0;
         this.maxCola = 0;
         this.minCola = Integer.MAX_VALUE;
+    }
+
+    
+    public void setInicioOcio(Double tiempo,int ServerID) {
+        this.inicioOcio.set(ServerID, tiempo);
     }
 
 
@@ -37,6 +47,7 @@ public class Estadisticas  {
 
     
     public void imprimirRepeorte(double tiempoTotalSimulacion) {
+        
         //Espera
         double maxEspera = esperas.stream().mapToDouble(v->v).max().orElse(0);
         double minEspera = esperas.stream().filter(v -> v > 0.0).mapToDouble(v->v).min().orElse(0);
@@ -46,17 +57,18 @@ public class Estadisticas  {
         double minEnSistema =tiempoEnSistema.stream().filter(v -> v > 0.0).mapToDouble(v->v).min().orElse(0);
         double mediaEnSistema= tiempoEnSistema.stream().mapToDouble(v->v).average().orElse(0);
         //Ocio
-        double maxOcio = ocios.stream().mapToDouble(v->v).max().orElse(0);
-        double minOcio = ocios.stream().filter(v -> v > 0.0).mapToDouble(v->v).min().orElse(0);
-        double porcentajeOcio = (ocioTotal/tiempoTotalSimulacion) * 100;
-    
+        for(int i=0;i<ocioTotal.size();i++){
+        System.out.println("Server "+(i+1));
+        System.out.printf("Ociosidad (min) -> Total: %.2f (%.2f%%)\n", this.ocioTotal.get(i), (this.ocioTotal.get(i)/tiempoTotalSimulacion) * 100 );
+        }
+        System.out.printf("OCIO\nMax: %.2f \n",this.maxOcio);
+        System.out.printf("Min: %.2f\n",this.minOcio);
         System.out.printf("Tiempos en Sistema (min) -> Media: %.2f | Max: %.2f | Min: %.2f\n", mediaEnSistema, maxEnSistema, minEnSistema);
         System.out.printf("Tiempos de Espera (min) -> Media: %.2f | Max: %.2f | Min: %.2f\n", mediaEspera, maxEspera, minEspera);
-        System.out.printf("Ociosidad (min) -> Total: %.2f (%.2f%%) | Max: %.2f | Min: %.2f\n", ocioTotal, porcentajeOcio, maxOcio, minOcio);
-        System.out.println("Arribos de Aeronaves : "+ aeronaveArribada);
-        System.out.println("Aterrizajes de Aeronaves : "+ aeronaveAterrizada);
-        System.out.println("Tamaño Maximo de Cola : " + maxCola);
-        System.out.println("Tamaño Minimo de Cola : "+minCola);
+        System.out.println("Arribos de Aeronaves : "+ this.aeronaveArribada);
+        System.out.println("Aterrizajes de Aeronaves : "+ this.aeronaveAterrizada);
+        System.out.println("Tamaño Maximo de Cola : " + this.maxCola);
+        System.out.println("Tamaño Minimo de Cola : "+ this.minCola);
 
     }
     
@@ -73,11 +85,16 @@ public class Estadisticas  {
     }
 
 
-    public void registrarTiempoOcio(double tiempoInicio, double tiempoFin) {
-        double delta = tiempoFin-tiempoInicio;
+    public void registrarTiempoOcio(int serverID, double tiempoFin) {
+        double delta = tiempoFin-inicioOcio.get(serverID);
         if(delta>0){
-            ocios.add(delta);
-            ocioTotal += delta;
+            ocioTotal.set(serverID, ocioTotal.get(serverID)+delta);
+            if(delta>this.maxOcio){
+                this.maxOcio=delta;
+            }
+            if(delta<this.minOcio){
+                this.minOcio=delta;
+            }
         }
         
     }
@@ -93,6 +110,9 @@ public class Estadisticas  {
             }
         }
     }
+
+
+    
     
     
 }
