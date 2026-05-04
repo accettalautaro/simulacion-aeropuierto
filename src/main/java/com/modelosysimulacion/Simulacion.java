@@ -1,7 +1,7 @@
 package com.modelosysimulacion;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 import com.modelosysimulacion.eventos.Arribo;
 import com.modelosysimulacion.eventos.Evento;

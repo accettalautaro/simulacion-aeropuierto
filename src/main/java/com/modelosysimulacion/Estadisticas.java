@@ -1,7 +1,6 @@
 package com.modelosysimulacion;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Estadisticas  {
@@ -51,11 +50,15 @@ public class Estadisticas  {
 
     
     public void imprimirRepeorte(double tiempoTotalSimulacion,ArrayList<Server> servers) {
-        
+        double totalEspera=0;
         //Espera
         double maxEspera = esperas.stream().mapToDouble(v->v).max().orElse(0);
         double minEspera = esperas.stream().filter(v -> v > 0.0).mapToDouble(v->v).min().orElse(0);
-        double mediaEspera = esperas.stream().mapToDouble(v->v).average().orElse(0);
+        //double mediaEspera = esperas.stream().mapToDouble(v->v).average().orElse(0);
+        for(int i=0; i<esperas.size();i++){
+            totalEspera= totalEspera + esperas.get(i);
+        }
+        double mediaEspera= totalEspera/this.aeronaveAterrizada;
         //Tiempo en Sistema
         double maxEnSistema= tiempoEnSistema.stream().mapToDouble(v->v).max().orElse(0);
         double minEnSistema =tiempoEnSistema.stream().filter(v -> v > 0.0).mapToDouble(v->v).min().orElse(0);

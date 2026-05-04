@@ -16,9 +16,9 @@ public class App
         
         Simulacion simulador= new Simulacion.Builder()
             .tiempoSimulacion(40320.0)
-            .servers(1)
-            .tiempoArribos(new GenerarArriboT1(randomizer))
-            .tiempoSalidas(new GenerarSalidaT2(randomizer))
+            .servers(5)
+            .tiempoArribos(new GenerarTArribo(randomizer))
+            .tiempoSalidas(new GenerarTSalida(randomizer))
             .build();
         simulador.ejecutar();
         simulador.reporte();
