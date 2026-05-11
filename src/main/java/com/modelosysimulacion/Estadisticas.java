@@ -50,15 +50,12 @@ public class Estadisticas  {
 
     
     public void imprimirRepeorte(double tiempoTotalSimulacion,ArrayList<Server> servers) {
-        double totalEspera=0;
+        
         //Espera
         double maxEspera = esperas.stream().mapToDouble(v->v).max().orElse(0);
         double minEspera = esperas.stream().filter(v -> v > 0.0).mapToDouble(v->v).min().orElse(0);
-        //double mediaEspera = esperas.stream().mapToDouble(v->v).average().orElse(0);
-        for(int i=0; i<esperas.size();i++){
-            totalEspera= totalEspera + esperas.get(i);
-        }
-        double mediaEspera= totalEspera/this.aeronaveAterrizada;
+        double mediaEspera = esperas.stream().mapToDouble(v->v).average().orElse(0);
+        // ---------------------------------
         //Tiempo en Sistema
         double maxEnSistema= tiempoEnSistema.stream().mapToDouble(v->v).max().orElse(0);
         double minEnSistema =tiempoEnSistema.stream().filter(v -> v > 0.0).mapToDouble(v->v).min().orElse(0);
@@ -72,7 +69,7 @@ public class Estadisticas  {
         System.out.printf("Ocio\nMax: %.2f \n",this.maxOcio);
         System.out.printf("Min: %.2f\n",this.minOcio);
         System.out.printf("Tiempos en Sistema (min) -> Media: %.2f | Max: %.2f | Min: %.2f\n", mediaEnSistema, maxEnSistema, minEnSistema);
-        System.out.printf("Tiempos de Espera (min) -> Media: %.2f | Max: %.2f | Min: %.2f\n", mediaEspera, maxEspera, minEspera);
+        System.out.printf("Tiempos de Espera (min) -> Media: %.2f | Max: %.2f | Min: %.2f\n", mediaEspera, maxEspera,minEspera);
         System.out.println("Arribos de Aeronaves : "+ this.aeronaveArribada);
         System.out.println("Aterrizajes de Aeronaves : "+ this.aeronaveAterrizada);
         System.out.println("Tamaño Maximo de Cola : " + this.maxCola);
@@ -83,7 +80,6 @@ public class Estadisticas  {
     
     public void registrarTiempoEspera(double tiempo) {
         esperas.add(tiempo);
-        
     }
     
     

@@ -12,7 +12,7 @@ public class Exponencial implements Distribucion  {
     @Override
     public double getValue(Randomizer randomizer) {
         
-        return ((-60/media)*Math.log(1-randomizer.nextRandom()));
+        return (-(this.media)*Math.log(1-randomizer.nextRandom()));
     }    
 
 }

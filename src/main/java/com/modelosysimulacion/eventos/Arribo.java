@@ -25,10 +25,10 @@ public class Arribo extends Evento{
         Criterio seleccionar = new Seleccionar();
         servidor=seleccionar.seleccionar(servers);
         if(!servers.get(servidor).estaOcupada()){
-            // para calcular los intervalos de hora pico mod 1440
             // server desocupado
+
             servers.get(servidor).ocupar();
-            estadisticas.registrarTiempoEspera(0.0); // no hay tiempo de espera
+            //estadisticas.registrarTiempoEspera(0.0); // no hay tiempo de espera
             estadisticas.registrarTiempoOcio(servidor, this.tiempoEjecucion); //registro el tiempo de ocio
             //programo la salida del avion
             double salida = this.tiempoEjecucion + genSalida.generarTiempo(this.tiempoEjecucion);

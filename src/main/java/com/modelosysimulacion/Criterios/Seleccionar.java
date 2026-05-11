@@ -4,28 +4,23 @@ import java.util.ArrayList;
 
 import com.modelosysimulacion.Server;
 
-public class Seleccionar implements Criterio {
-    private int tamMinCola;
-    private int server;
-    public Seleccionar() {
-        this.server=0;
-        this.tamMinCola = Integer.MAX_VALUE;
-    }
-
+public class Seleccionar implements Criterio {  
     @Override
     public int seleccionar(ArrayList<Server> servidores) {
-        int i=0;
-        while (i<servidores.size()&& servidores.get(i).estaOcupada()==true) {
-            if(servidores.get(i).getTamañoCola()<this.tamMinCola){
-                this.server=i;
-                this.tamMinCola=servidores.get(i).getTamañoCola();
+        for (int i = 0; i < servidores.size(); i++) {
+            if (!servidores.get(i).estaOcupada()) {
+                return i; // Retorna la primera pista libre que encuentre
             }
-            i++;
         }
-        if(i==servidores.size()){
-            return this.server;
+        int serverElegido = 0;
+        int tamMinCola = servidores.get(0).getTamañoCola(); //tomo el primero
+        for (int i = 1; i < servidores.size(); i++) {
+            if (servidores.get(i).getTamañoCola() < tamMinCola) {
+                serverElegido = i;
+                tamMinCola = servidores.get(i).getTamañoCola();
+            }
         }
-        return i;
+        return serverElegido;
     }
     
 }
